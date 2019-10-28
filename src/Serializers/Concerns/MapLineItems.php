@@ -3,6 +3,7 @@
 namespace Omneo\Apparel21\Serializers\Concerns;
 
 use Omneo\Apparel21\Entities;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 trait MapLineItems
@@ -16,7 +17,7 @@ trait MapLineItems
      */
     protected function mapLineItems(array $payload, Collection $lineItems)
     {
-        array_set($payload, 'OrderDetails', []);
+        Arr::set($payload, 'OrderDetails', []);
 
         $lineItems->each(function (Entities\LineItem $lineItem) use (&$payload) {
             array_push($payload['OrderDetails'], $this->serializeLineItem($lineItem));

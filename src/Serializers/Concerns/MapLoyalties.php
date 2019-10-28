@@ -3,6 +3,7 @@
 namespace Omneo\Apparel21\Serializers\Concerns;
 
 use Omneo\Apparel21\Entities;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 trait MapLoyalties
@@ -18,7 +19,7 @@ trait MapLoyalties
     {
         if($loyalties->count() == 0) return $payload;
 
-        array_set($payload, 'Loyalties', [
+        Arr::set($payload, 'Loyalties', [
             '@attributes' => ['Type' => 'Array'],
         ]);
 

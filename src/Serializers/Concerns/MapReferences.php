@@ -3,6 +3,7 @@
 namespace Omneo\Apparel21\Serializers\Concerns;
 
 use Omneo\Apparel21\Entities;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 trait MapReferences
@@ -19,7 +20,7 @@ trait MapReferences
     {
         if($references->count() == 0) return $payload;
 
-        array_set($payload, 'References', [
+        Arr::set($payload, 'References', [
             '@attributes' => ['Type' => 'Array'],
         ]);
 

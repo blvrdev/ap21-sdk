@@ -3,6 +3,7 @@
 namespace Omneo\Apparel21\Serializers\Concerns;
 
 use Omneo\Apparel21\Entities;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 trait MapAddresses
@@ -24,7 +25,7 @@ trait MapAddresses
             if ($address = $addresses->first(function (Entities\Address $address) use ($addressType) {
                 return $addressType === $address->getType();
             })) {
-                array_set($payload, $payloadKey, $this->serializeAddress($address));
+                Arr::set($payload, $payloadKey, $this->serializeAddress($address));
             }
 
         });

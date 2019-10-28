@@ -5,6 +5,7 @@ namespace Omneo\Apparel21\Actions;
 use GuzzleHttp\Psr7\Request;
 use Omneo\Apparel21\Entities;
 use Omneo\Apparel21\Contracts;
+use Illuminate\Support\Arr;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Omneo\Apparel21\Serializers\OrderSerializer;
@@ -67,7 +68,7 @@ class CreateOrder extends BaseAction implements Contracts\Action
      */
     protected function parseLocationHeader(ResponseInterface $response)
     {
-        return (int) array_last(
+        return (int) Arr::last(
             explode(
                 '/',
                 parse_url(

@@ -7,6 +7,7 @@ use Omneo\Apparel21;
 use Omneo\Apparel21\Contracts;
 use Omneo\Apparel21\Entities;
 use Omneo\Apparel21\Serializers;
+use Illuminate\Support\Arr;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -85,7 +86,7 @@ class UpdatePerson extends BaseAction implements Contracts\Action
      */
     protected function parseLocationHeader(ResponseInterface $response)
     {
-        return array_last(
+        return Arr::last(
             explode(
                 '/',
                 parse_url(

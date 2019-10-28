@@ -3,6 +3,7 @@
 namespace Omneo\Apparel21\Serializers\Concerns;
 
 use Omneo\Apparel21\Entities;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 trait MapPayments
@@ -16,7 +17,7 @@ trait MapPayments
      */
     protected function mapPayments(array $payload, Collection $payments)
     {
-        array_set($payload, 'Payments', []);
+        Arr::set($payload, 'Payments', []);
 
         $payments->each(function (Entities\Payment $payment) use (&$payload) {
             array_push($payload['Payments'], $this->serializePayment($payment));

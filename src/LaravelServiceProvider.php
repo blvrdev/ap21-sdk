@@ -25,7 +25,7 @@ class LaravelServiceProvider extends ServiceProvider
             $client->setCountryCode(config('services.apparel21.country_code'));
             $client->setLogging(config('services.apparel21.logging'));
             $client->setVerifyPeer(config('services.apparel21.verify'));
-            $client->setLogger(Log::getMonolog());
+            $client->setLogger(Log::channel('ap21-sdk')->getLogger());
             $client->setupClient();
 
             return $client;

@@ -14,6 +14,13 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class GetProducts extends BaseAction implements Contracts\Action
 {
     /**
+     * Whether to return full or simple product data
+     *
+     * @var bool
+     */
+    public $simple = true;
+
+    /**
      * How many records to skip.
      *
      * @var integer
@@ -33,6 +40,19 @@ class GetProducts extends BaseAction implements Contracts\Action
      * @var Carbon
      */
     public $updatedAfter;
+
+    /**
+     * Set whether to return full or simple product data
+     *
+     * @param  bool $simple
+     * @return static
+     */
+    public function simple($simple)
+    {
+        $this->simple = $simple;
+
+        return $this;
+    }
 
     /**
      * Set how many records to skip.
@@ -80,10 +100,14 @@ class GetProducts extends BaseAction implements Contracts\Action
      */
     public function request()
     {
-        $request = new GuzzleHttp\Psr7\Request('GET', 'ProductsSimple');
+        if($this->simple){
+            $request = new GuzzleHttp\Psr7\Request('GET', 'ProductsSimple');
+        } else {
+            $request = new GuzzleHttp\Psr7\Request('GET', 'Products');
+        }
 
         return $request->withUri($request->getUri()->withQuery(http_build_query([
-            'startRow'     => $this->skip ? $this->skip + 1 : null,
+            'startRow'     => $this->skip ? $this->skip + 1 : 0,
             'pageRows'     => $this->take,
             'updatedAfter' => $this->updatedAfter ? $this->updatedAfter->format('Y-m-d\TH:i:s') : null
         ])));
@@ -101,8 +125,14 @@ class GetProducts extends BaseAction implements Contracts\Action
 
         $collection = new Collection;
 
-        foreach ($data->ProductSimple as $product) {
-            $collection->push((new Parsers\ProductSimpleParser)->parse($product));
+        if($this->simple){
+            foreach ($data->ProductSimple as $product) {
+                $collection->push((new Parsers\ProductSimpleParser)->parse($product));
+            }
+        } else {
+            foreach ($data->Product as $product) {
+                $collection->push((new Parsers\ProductParser)->parse($product));
+            }
         }
 
         if ($this->take) {

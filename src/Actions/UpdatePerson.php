@@ -7,7 +7,6 @@ use Omneo\Apparel21;
 use Omneo\Apparel21\Contracts;
 use Omneo\Apparel21\Entities;
 use Omneo\Apparel21\Serializers;
-use Illuminate\Support\Arr;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -67,33 +66,6 @@ class UpdatePerson extends BaseAction implements Contracts\Action
      */
     public function response(ResponseInterface $response)
     {
-        // Populate ID from Location header if possible
-        if ($this->person instanceof Contracts\Identifiable) {
-            $this->person->getIdentifiers()->put(
-                'ap21_id',
-                $this->parseLocationHeader($response)
-            );
-        }
-
         return $this->person;
-    }
-
-    /**
-     * Get person ID from Location header.
-     *
-     * @param  ResponseInterface $response
-     * @return string
-     */
-    protected function parseLocationHeader(ResponseInterface $response)
-    {
-        return Arr::last(
-            explode(
-                '/',
-                parse_url(
-                    $response->getHeaderLine('Location'),
-                    PHP_URL_PATH
-                )
-            )
-        );
     }
 }

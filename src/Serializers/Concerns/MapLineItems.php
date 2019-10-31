@@ -43,16 +43,27 @@ trait MapLineItems
             })->toArray()
         ];
 
+        if($lineItem->getDiscount()->isEmpty()){
+            $line_value = $lineItem->getTotal() / 100;
+        } else {
+            $line_value = ($lineItem->getTotal() / 100) - $discount['Discount']['Value'];
+        }
+
+        if($lineItem->getTaxPercent()){
+            $value = $line_value + ($line_value * ($lineItem->getTaxPercent() / 100));
+        } else {
+            $value = $line_value;
+        }
+
         return array_filter([
             '@node'     => 'OrderDetail',
             'SkuId'     => $lineItem->getSellable()->getIdentifiers()->get('ap21_sku_id'),
             'ProductId' => $lineItem->getSellable()->getIdentifiers()->get('ap21_product_id'),
             'Price'     => $lineItem->getSellable()->getPrice() / 100,
             'Quantity'  => $lineItem->getQuantity(),
-            'Value'     => $lineItem->getDiscount()->isEmpty()
-                ? $lineItem->getTotal() /100
-                : (($lineItem->getTotal() /100) - $discount['Discount']['Value']),
+            'Value'     => $value,
             'Discounts' => $discount,
+            'TaxPercent' => $lineItem->getTaxPercent(),
             'ExtraVoucherInformation' => $lineItem->getGiftCard()->except('ReceiverName', 'SenderName')->toArray(),
             'ReceiverName' => $lineItem->getGiftCard()->get('ReceiverName'),
             'SenderName' => $lineItem->getGiftCard()->get('SenderName')

@@ -28,6 +28,13 @@ trait LineItem
     protected $total;
 
     /**
+     * Tax Percent.
+     *
+     * @var float
+     */
+    protected $taxPercent;
+
+    /**
      * Return sellable.
      *
      * @return Sellable
@@ -94,6 +101,29 @@ trait LineItem
     public function setTotal($total = null)
     {
         $this->total = $total;
+
+        return $this;
+    }
+
+    /**
+     * Return tax percent.
+     *
+     * @return float
+     */
+    public function getTaxPercent()
+    {
+        return $this->taxPercent;
+    }
+
+    /**
+     * Set tax percent.
+     *
+     * @param  float $taxPercent
+     * @return static
+     */
+    public function setTaxPercent($taxPercent = null)
+    {
+        $this->taxPercent = $taxPercent;
 
         return $this;
     }

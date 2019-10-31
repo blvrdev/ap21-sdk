@@ -22,6 +22,11 @@ class Order implements Contracts\Order, Contracts\Identifiable
     protected $totalDiscount;
 
     /**
+     * @var bool
+     */
+    protected $pricesIncludeTax;
+
+    /**
      * Get freight option.
      *
      * @return FreightOption
@@ -61,6 +66,27 @@ class Order implements Contracts\Order, Contracts\Identifiable
     public function setTotalDiscount($totalDiscount)
     {
         $this->totalDiscount = $totalDiscount;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getPricesIncludeTax()
+    {
+        return $this->pricesIncludeTax;
+    }
+
+    /**
+     * Set whether prices include tax
+     *
+     * @param bool $pricesIncludeTax
+     * @return static
+     */
+    public function setPricesIncludeTax($pricesIncludeTax)
+    {
+        $this->pricesIncludeTax = $pricesIncludeTax;
 
         return $this;
     }

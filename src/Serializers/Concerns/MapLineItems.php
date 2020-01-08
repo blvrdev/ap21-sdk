@@ -50,23 +50,28 @@ trait MapLineItems
         }
 
         if($lineItem->getTaxPercent()){
-            $value = $line_value + ($line_value * ($lineItem->getTaxPercent() / 100));
+            $value = $line_value + round($line_value * ($lineItem->getTaxPercent() / 100), 2);
         } else {
             $value = $line_value;
         }
 
-        return array_filter([
+        $filtered_fields = array_filter([
             '@node'     => 'OrderDetail',
             'SkuId'     => $lineItem->getSellable()->getIdentifiers()->get('ap21_sku_id'),
             'ProductId' => $lineItem->getSellable()->getIdentifiers()->get('ap21_product_id'),
             'Price'     => $lineItem->getSellable()->getPrice() / 100,
             'Quantity'  => $lineItem->getQuantity(),
             'Value'     => $value,
-            'Discounts' => $discount,
             'TaxPercent' => $lineItem->getTaxPercent(),
             'ExtraVoucherInformation' => $lineItem->getGiftCard()->except('ReceiverName', 'SenderName')->toArray(),
             'ReceiverName' => $lineItem->getGiftCard()->get('ReceiverName'),
             'SenderName' => $lineItem->getGiftCard()->get('SenderName')
         ]);
+
+        if($discount['Discount']){
+            $filtered_fields['Discounts'] = $discount;
+        }
+
+        return $filtered_fields;
     }
 }

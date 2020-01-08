@@ -42,8 +42,11 @@ class OrderSerializer
             'OrderNumber' => $order->getIdentifiers()->get('ap21_number'),
             'PersonId'    => $order->getCustomer()->getIdentifiers()->get('ap21_id'),
             'TotalDiscount' => $order->getTotalDiscount() / 100,
-            'PricesIncludeTax' => $order->getPricesIncludeTax()
         ]);
+
+        if($order->getPricesIncludeTax() === false){
+            $payload['PricesIncludeTax'] = 'false';
+        }
 
         $payload = $this->mapContacts($payload, $order->getContacts());
         $payload = $this->mapAddresses($payload, $order->getAddresses());

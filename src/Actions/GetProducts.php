@@ -106,11 +106,17 @@ class GetProducts extends BaseAction implements Contracts\Action
             $request = new GuzzleHttp\Psr7\Request('GET', 'Products');
         }
 
-        return $request->withUri($request->getUri()->withQuery(http_build_query([
-            'startRow'     => $this->skip ? $this->skip + 1 : 0,
-            'pageRows'     => $this->take,
-            'updatedAfter' => $this->updatedAfter ? $this->updatedAfter->format('Y-m-d\TH:i:s') : null
-        ])));
+        if($this->take){
+            return $request->withUri($request->getUri()->withQuery(http_build_query([
+                'startRow'     => $this->skip ? $this->skip + 1 : 0,
+                'pageRows'     => $this->take,
+                'updatedAfter' => $this->updatedAfter ? $this->updatedAfter->format('Y-m-d\TH:i:s') : null
+            ])));
+        } else {
+            return $request->withUri($request->getUri()->withQuery(http_build_query([
+                'updatedAfter' => $this->updatedAfter ? $this->updatedAfter->format('Y-m-d\TH:i:s') : null
+            ])));
+        }
     }
 
     /**

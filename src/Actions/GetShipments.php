@@ -14,26 +14,36 @@ class GetShipments extends BaseAction implements Contracts\Action
     /**
      * Person ID
      *
-     * @var integer
+     * @var int
      */
-    public $person;
+    public $personId;
 
     /**
      * Order ID
      *
-     * @var integer
+     * @var int
      */
-    public $order;
+    public $orderId;
+
+    /**
+     * GetShipments constructor.
+     *
+     * @param int $orderId
+     */
+    public function __construct($orderId)
+    {
+        $this->orderId = $orderId;
+    }
 
     /**
      * Set person.
      *
-     * @param  integer $person
+     * @param  integer $personId
      * @return static
      */
-    public function person($person)
+    public function person($personId)
     {
-        $this->person = $person;
+        $this->personId = $personId;
 
         return $this;
     }
@@ -41,12 +51,12 @@ class GetShipments extends BaseAction implements Contracts\Action
     /**
      * Set order.
      *
-     * @param  integer $order
+     * @param  integer $orderId
      * @return static
      */
-    public function order($order)
+    public function order($orderId)
     {
-        $this->order = $order;
+        $this->orderId = $orderId;
 
         return $this;
     }
@@ -58,7 +68,7 @@ class GetShipments extends BaseAction implements Contracts\Action
      */
     public function request()
     {
-        return new GuzzleHttp\Psr7\Request('GET', 'Persons/' . $this->person . '/Shipments/' . $this->order);
+        return new GuzzleHttp\Psr7\Request('GET', 'Persons/' . $this->personId . '/Shipments/' . $this->orderId);
     }
 
     /**

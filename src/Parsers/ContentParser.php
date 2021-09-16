@@ -18,7 +18,7 @@ class ContentParser
     {
         $collection = collect();
 
-        foreach($xml->Content as $content){
+        foreach($xml->Contents as $content){
             $collection->push((new Content)
                 ->setCode((string) $content->ProductCode)
                 ->setColor((string) $content->ColourCode)

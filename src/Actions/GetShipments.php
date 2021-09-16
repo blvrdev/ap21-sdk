@@ -28,10 +28,12 @@ class GetShipments extends BaseAction implements Contracts\Action
     /**
      * GetShipments constructor.
      *
+     * @param int $personId
      * @param int $orderId
      */
-    public function __construct($orderId)
+    public function __construct($personId, $orderId)
     {
+        $this->personId = $personId;
         $this->orderId = $orderId;
     }
 

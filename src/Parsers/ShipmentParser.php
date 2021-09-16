@@ -23,9 +23,34 @@ class ShipmentParser
             ->setDispatchDate(Carbon::parse((string) $payload->DespatchDate));
 
         $shipment->setContents(
-            (new ContentParser)->parseCollection($payload->Contents)
+            $this->parseContents($payload->Contents)
         );
 
         return $shipment;
+    }
+
+    /**
+     * Parse payload Contents to a collection
+     *
+     * @param  SimpleXMLElement $xml
+     * @return Collection
+     */
+    public function parseContents(SimpleXMLElement $xml)
+    {
+        $collection = collect();
+
+        foreach($xml->Contents as $content){
+            $collection->push((new Entities\Content)
+                ->setCode((string) $content->ProductCode)
+                ->setColor((string) $content->ColourCode)
+                ->setSize((string) $content->SizeCode)
+                ->setSkuId((int) $content->SkuId)
+                ->setQuantity((int) $content->Quantity)
+            );
+        }
+
+        return $collection->reject(function (Entities\Content $content) {
+            return empty($content->getQuantity());
+        });
     }
 }

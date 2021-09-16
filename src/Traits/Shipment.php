@@ -58,7 +58,7 @@ trait Shipment
      * @param  string $carrierName
      * @return static
      */
-    public function setFirstName($carrierName = null)
+    public function setCarrierName($carrierName = null)
     {
         $this->carrierName = $carrierName;
 
